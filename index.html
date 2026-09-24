@@ -7,30 +7,15 @@
   <meta name="theme-color" content="#f8f6f1">
   <title>System Prompt Is All You Need?</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css?v=2">
 </head>
 <body>
 <a class="skip-link" href="#article">Skip to article</a>
 <div class="layout">
-  <aside class="sidebar" aria-label="Article navigation">
-    <a class="wordmark" href="#top" aria-label="System Prompt, top of article">SP<span class="wordmark-dot">.</span></a>
-    <p class="sidebar-label">Notes on trying to make<br>an agent do research</p>
-    <nav aria-label="Contents">
-      <a href="#supervision"><span>01</span> Still my job?</a>
-      <a href="#free"><span>02</span> Free the agent’s mind</a>
-      <a href="#taste"><span>03</span> The taste problem</a>
-      <a href="#possibilities"><span>04</span> Keep possibilities open</a>
-      <a href="#enough"><span>05</span> Is it enough?</a>
-    </nav>
-    <a class="sidebar-artifacts" href="#materials">The prompt &amp; notes <span aria-hidden="true">↗</span></a>
-    <p class="sidebar-status">A work in progress<br>No tracking · No external fonts</p>
-  </aside>
-
   <main id="article">
     <header class="hero" id="top">
-      <div class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Research / Agents / Trial and error</div>
       <h1>System Prompt<br>Is All You Need?</h1>
-      <div class="byline"><time datetime="2026-09">September 2026</time><span aria-hidden="true">·</span><span>Notes from one long conversation</span><span class="draft-tag">Draft</span></div>
+      <p class="byline"><time datetime="2026-09">September 2026</time> · Draft</p>
     </header>
 
     <div class="lede">
@@ -43,13 +28,12 @@
     <p>That became the start of a much longer experiment: not just searching for algorithms, but figuring out how I wanted an agent to search.</p>
 
     <section id="supervision">
-      <div class="section-number">01</div>
       <h2>Why is the research still my job?</h2>
       <p>For context, I work on tensor-network contraction order. You can evaluate the same network in different orders, and the amount of computation can change dramatically. I wanted a new algorithm for finding good orders—not just a faster implementation of an old one.</p>
       <p>The agent’s first response to my frustration was another set of workflow recommendations. More discriminating questions. Better diagnostics. More careful handling of negative results. Reasonable advice, but it already felt like we were adding another checklist.</p>
       <p>Then something happened inside this very conversation that explained my frustration better than any benchmark.</p>
       <p>I asked the agent to survey how other people build AI research systems. It gave me four possible survey angles and ended with:</p>
-      <div class="prompt-block"><div class="small-label">Instead of doing the survey</div><pre><code>Next: reply “all four,” or name the angles you want prioritized.</code></pre></div>
+      <div class="prompt-block"><pre><code>Next: reply “all four,” or name the angles you want prioritized.</code></pre></div>
       <p>I had asked for findings. It gave me homework.</p>
       <p>We traced that response to a survey-skill instruction requiring a strategy-selection menu. The agent was following the procedure, but the procedure put a decision back on me that I had intended to delegate.</p>
       <p>I didn’t know which direction would be most interesting. That was why I wanted a survey. As I told it:</p>
@@ -59,14 +43,13 @@
     </section>
 
     <section id="free">
-      <div class="section-number">02</div>
       <h2>What if I just let it think?</h2>
       <p>I liked the minimalism of <a href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/">pi</a>. Looking at it alongside <a href="https://github.com/karpathy/autoresearch">Karpathy’s autoresearch</a> and <a href="https://github.com/davebcn87/pi-autoresearch">pi-autoresearch</a>, I started wondering whether I needed such an elaborate research workflow at all.</p>
       <p>My wording at the time was <strong>“free agent’s mind.”</strong> I believed Astra had the ability to research. Maybe I should give it a clear objective, useful tools, and room to decide what came next.</p>
       <p>So we tried a clean setup: replace the system prompt, keep ordinary file and shell tools, add web access for reading, and let the agent investigate. I wanted to start normal <code>pi</code>, not launch a separate research platform.</p>
       <p>Even getting there took some pushing back. The setup initially grew a launcher, an isolated runtime, and more Markdown files than I wanted. I asked for a small <code>.pi</code> configuration instead. Global skills were still loading at one point; a duplicate web extension broke startup at another. “Minimal” took some cleanup.</p>
       <p>The arrangement we settled on was easy to understand:</p>
-      <div class="prompt-block"><div class="small-label">The setup, not another framework</div><pre><code>.pi/SYSTEM.md      How to approach the research
+      <div class="prompt-block"><pre><code>.pi/SYSTEM.md      How to approach the research
 .pi/settings.json  Model and tool configuration
 RESEARCH.md        The objective and what we have learned
 .worktrees/        Separate experiment workspaces</code></pre></div>
@@ -77,7 +60,6 @@ RESEARCH.md        The objective and what we have learned
     </section>
 
     <section id="taste">
-      <div class="section-number">03</div>
       <h2>The agent could work. But did it have taste?</h2>
       <p>The minimal setup didn’t magically produce the research I wanted.</p>
       <p>One session found engineering speedups. Another produced a careful study of how preprocessing could exclude good contraction orders. There were proofs, reproducible experiments, and sensible caveats. The reports were not empty.</p>
@@ -92,7 +74,6 @@ RESEARCH.md        The objective and what we have learned
     </section>
 
     <section id="possibilities">
-      <div class="section-number">04</div>
       <h2>A list of ideas is not an open investigation.</h2>
       <p>The next pattern was subtler. The agent could list several directions, choose one, and investigate it quite intelligently. But the alternatives mostly stayed on the list.</p>
       <p>I wanted something more active: investigate a few possibilities, learn enough to compare them, improve them, combine them, and let the investigation generate new possibilities. Narrow the search progressively, rather than picking a favorite after the opening brainstorm.</p>
@@ -106,13 +87,12 @@ RESEARCH.md        The objective and what we have learned
       <p>Then it finished the study and stopped.</p>
       <p>We had asked it to “keep going,” but also to “report a substantive result or a genuine blocker.” Looking back, that offered two different interpretations of when the job was done. I wanted a result to change the next research decision, not automatically end the session.</p>
       <p>The next proposed correction was simple:</p>
-      <div class="prompt-block"><div class="small-label">A proposed continuation instruction</div><pre><code>Keep this result as a checkpoint, not the finish line.
+      <div class="prompt-block"><pre><code>Keep this result as a checkpoint, not the finish line.
 Reassess and evolve the idea pool, then continue investigating.</code></pre></div>
       <p>That was a correction to try, not a solved stopping problem. And there is a practical limit: when the model ends its turn, this pi setup does not automatically start another one. A sentence in the prompt is not a continuation mechanism.</p>
     </section>
 
     <section id="enough">
-      <div class="section-number">05</div>
       <h2>So, is a system prompt all you need?</h2>
       <p>I don’t know yet. This did not end with a breakthrough algorithm or a completely autonomous researcher.</p>
       <p>But I found the smaller setup easier to reason about. When the agent did something I disliked, I could inspect the instructions and the actual conversation, then change a specific expectation. Was the objective unclear? Was I accidentally asking for a report rather than continued investigation? Did “compare ideas” mean once at the beginning, or throughout the work?</p>
@@ -125,9 +105,9 @@ Reassess and evolve the idea pool, then continue investigating.</code></pre></di
     <section class="materials" id="materials">
       <h2>If you want to look under the hood</h2>
       <ul class="material-links">
-        <li><a href="artifacts/research-system-prompt.txt">The research system prompt we arrived at</a><span>TXT</span></li>
-        <li><a href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/">The pi design post that helped start this</a><span>LINK</span></li>
-        <li><a href="https://github.com/Br0kenSmi1e/system-prompt">This blog’s source and revision history</a><span>GITHUB</span></li>
+        <li><a href="artifacts/research-system-prompt.txt">The research system prompt we arrived at</a></li>
+        <li><a href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/">The pi design post that helped start this</a></li>
+        <li><a href="https://github.com/Br0kenSmi1e/system-prompt">This blog’s source and revision history</a></li>
       </ul>
       <details>
         <summary>A side experiment that didn’t settle anything</summary>
@@ -137,7 +117,7 @@ Reassess and evolve the idea pool, then continue investigating.</code></pre></di
       </details>
       <p class="editorial-note">Written with AI assistance from the original conversation and saved records. Conversation excerpts retain the informal wording. This is my experience of tuning one setup, not a controlled comparison of frameworks. The raw sessions, credentials, and private evaluations are not published.</p>
     </section>
-    <footer><span>System Prompt / Still figuring it out</span><a href="#top">Back to top ↑</a></footer>
+    <footer><a href="#top">Back to top</a></footer>
   </main>
 </div>
 </body>
