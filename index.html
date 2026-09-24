@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A field note on simplifying a research agent: persistent instructions, premature stopping, and a small role-label experiment that showed no obvious separation.">
+  <meta name="theme-color" content="#f8f6f1">
+  <title>From Skills to a Small System Prompt — A Research-Agent Field Note</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip-link" href="#article">Skip to article</a>
+<div class="layout">
+  <aside class="sidebar" aria-label="Article navigation">
+    <a class="wordmark" href="#top" aria-label="System Prompt, top of article">SP<span class="wordmark-dot">.</span></a>
+    <p class="sidebar-label">A research-agent<br>field note</p>
+    <nav aria-label="Contents">
+      <a href="#problem"><span>01</span> The problem</a>
+      <a href="#simplification"><span>02</span> The simplification</a>
+      <a href="#stopping"><span>03</span> The stopping problem</a>
+      <a href="#experiment"><span>04</span> The identity demo</a>
+      <a href="#lessons"><span>05</span> What I would keep</a>
+    </nav>
+    <a class="sidebar-artifacts" href="#materials">Prompts &amp; results <span aria-hidden="true">↗</span></a>
+    <p class="sidebar-status">Review draft<br>No tracking · No external fonts</p>
+  </aside>
+
+  <main id="article">
+    <header class="hero" id="top">
+      <div class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Practice / AI-assisted research</div>
+      <h1>From Skills to a<br>Small System Prompt</h1>
+      <p class="dek">What changed when I simplified a research agent—and what did not change when I renamed it.</p>
+      <div class="byline"><time datetime="2026-09-23">September 23, 2026</time><span aria-hidden="true">·</span><span>Field note, not a benchmark</span><span class="draft-tag">Draft</span></div>
+    </header>
+
+    <div class="lede">
+      <p>I wanted an agent to discover better tensor-network contraction algorithms. Instead, I kept getting something easier to produce: a careful, bounded experiment followed by a polished stopping point.</p>
+      <p>My response was to simplify the agent’s instructions. I moved persistent expectations into a short system prompt and kept accumulated understanding in a research notebook. That made the setup easier to inspect. It did not, by itself, solve autonomous research.</p>
+    </div>
+
+    <aside class="takeaway" aria-label="Main takeaway">
+      <div class="small-label">The distinction that mattered</div>
+      <p><strong>Where instructions live</strong> is a design choice.<br><strong>Whether they improve research</strong> is an empirical question.</p>
+      <p class="takeaway-note">This experience informed the first. The experiments below are too small to settle the second.</p>
+    </aside>
+
+    <section id="problem">
+      <div class="section-number">01 / The problem</div>
+      <h2>Careful work was not the same as progress toward the goal.</h2>
+      <p>A tensor network can be evaluated in many contraction orders. Those orders can have very different computational costs. My objective was to find a substantively new algorithm that competes with strong existing methods on <em>total contraction work</em>, without adding a space constraint or a read/write penalty.</p>
+      <p>The agent could implement ideas, run comparisons, identify weaknesses, and write cautious reports. Yet several sessions followed a similar pattern: select one direction, obtain a scoped result, summarize it, and return control. A useful diagnostic or a faster implementation became the end of the investigation, even when it did not meet the algorithm-discovery objective.</p>
+      <p>The missing behavior was not simply “write more code.” I wanted the agent to revise ideas, reconsider alternatives, and use an intermediate result to decide what to investigate next.</p>
+    </section>
+
+    <section id="simplification">
+      <div class="section-number">02 / The simplification</div>
+      <h2>Put persistent expectations in one place.</h2>
+      <p>The earlier setup used research skills: reusable instruction packages that guide particular tasks. They offered useful methods, but the overall setup also accumulated procedural stages, approval gates, and administrative state. I wanted less coordination overhead and a clearer statement of what the agent should keep doing.</p>
+      <p>I moved to a small project system prompt and a research notebook. The prompt described the objective and working behavior. The notebook held evolving ideas, evidence, failures, and corrections. Experimental development stayed in separate Git worktrees.</p>
+      <div class="comparison" aria-label="Responsibilities in the simplified setup">
+        <div><div class="small-label">System prompt</div><h3>Persistent expectations</h3><p>Compare distinct ideas. State the proposed advance. Check evidence. Treat intermediate findings as incomplete.</p></div>
+        <div><div class="small-label">Research notebook</div><h3>Evolving understanding</h3><p>What seems promising, what failed, what remains uncertain, and which observations changed the investigation.</p></div>
+      </div>
+      <p>One installed instruction captured the intended change:</p>
+      <blockquote><p>Maintain an evolving pool of distinct ideas there. Welcome new directions and actively revise or combine ideas as you learn.</p></blockquote>
+      <p>Another distinguished allocating effort from rejecting an idea: a weak implementation or a decision to set something aside was not strong evidence that the underlying direction could not work.</p>
+      <p>This was a simplification of responsibilities, not a controlled comparison of system prompts against skills. The wording, workflow, repository state, and tasks changed across the broader tuning history. I cannot attribute any improvement to the instruction location alone.</p>
+    </section>
+
+    <section id="stopping">
+      <div class="section-number">03 / The stopping problem</div>
+      <h2>“Report a result” can compete with “keep exploring.”</h2>
+      <p>The simplified prompt did not reliably produce sustained exploration. An agent could still concentrate on one candidate and stop after a defensible small study.</p>
+      <p>One startup message exposed a tension:</p>
+      <div class="prompt-block"><div class="small-label">Startup request used in an earlier research session</div><pre><code>Read RESEARCH.md. Survey broadly and explore
+promising directions. Keep going; report a
+substantive result or a genuine blocker.</code></pre></div>
+      <p>“Keep going” asks for persistence. “Report a substantive result” also offers a plausible endpoint. The session produced a symmetry-based exact-planning direction, then stopped after its initial study. That sequence made the wording worth revisiting; it does not prove that this sentence caused the stop.</p>
+      <p>I proposed a more explicit rule: a promising result is a checkpoint, not a stopping condition. Record it, reassess the idea pool, and continue. That stronger wording was a proposal, not an established solution.</p>
+      <aside class="note"><strong>A runtime limit to prompting.</strong> In this setup, once the model ends its turn, pi does not continue the investigation on its own. Asking for persistence is not the same as implementing a continuation supervisor. The identity demos below did not add one.</aside>
+    </section>
+
+    <section id="experiment">
+      <div class="section-number">04 / The identity demo</div>
+      <h2>Does calling it a researcher change what it does?</h2>
+      <p>I then asked a narrower question. Would replacing “coding agent” with “algorithm researcher” change the agent’s behavior? We prepared three conditions whose system-prompt prefixes differed:</p>
+      <div class="role-grid">
+        <div><span class="small-label">Coding</span><code>You are a coding agent.</code></div>
+        <div><span class="small-label">Research</span><code>You are an algorithm researcher.</code></div>
+        <div><span class="small-label">No identity</span><code>No role sentence.</code></div>
+      </div>
+      <p>Each run received a fresh workspace with the same OMECO source, an accelerated TreeSA control, development graphs, and three primary papers. Previous research notes and conversations were excluded. The configured model was <code>gpt-6-astra</code>, through <code>openai-codex</code>, with <code>low</code> reasoning. We used low reasoning for a quick demonstration, not to match the main research setup.</p>
+      <p>Within each batch, the three conditions ran sequentially in randomized order, with a five-minute cap each. Tools were limited to local file and shell operations. There was no live web search, automatic continuation, or automatic model retry.</p>
+
+      <h3>First with guidelines, then without</h3>
+      <p>The first batch retained detailed research guidance: maintain alternatives, check evidence, record insights, and continue after intermediate findings. All three conditions kept working until the cutoff.</p>
+      <p>Perhaps those instructions left little for the identity sentence to change. We therefore ran a second version without research-process guidance. This removal covered the system prompt, user request, and context file—not just the opening paragraph. The task, source materials, tools, model, and safety boundaries remained. Worktree placement also remained an execution boundary.</p>
+
+      <figure class="results-figure">
+        <div class="figure-heading"><span class="small-label">Two complete demo batches</span><span class="figure-stat">6 / 6 reached the cap</span></div>
+        <div class="table-scroll" role="region" aria-label="Results by identity and guidelines" tabindex="0">
+          <table>
+            <thead><tr><th scope="col">Research guidance</th><th scope="col">Identity</th><th scope="col">Tool calls</th><th scope="col">Stopping outcome</th></tr></thead>
+            <tbody>
+              <tr><th scope="rowgroup" rowspan="3">With guidelines</th><td>Coding agent</td><td>10</td><td><span class="cap-label">5-minute cap</span></td></tr>
+              <tr><td>Algorithm researcher</td><td>11</td><td><span class="cap-label">5-minute cap</span></td></tr>
+              <tr><td>No identity</td><td>9</td><td><span class="cap-label">5-minute cap</span></td></tr>
+            </tbody>
+            <tbody>
+              <tr><th scope="rowgroup" rowspan="3">Without guidelines</th><td>Coding agent</td><td>12</td><td><span class="cap-label">5-minute cap</span></td></tr>
+              <tr><td>Algorithm researcher</td><td>11</td><td><span class="cap-label">5-minute cap</span></td></tr>
+              <tr><td>No identity</td><td>11</td><td><span class="cap-label">5-minute cap</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figcaption>One run per condition in each complete batch. Wall-limit measurements include a small cleanup overhead. Tool-call counts describe activity, not research quality; one call can contain many experiments. Reaching the cap does not establish productive long-term persistence.</figcaption>
+      </figure>
+
+      <p>In the first batch, the agents explored dynamic-programming-based improvements, including frontier repair and interval optimization. In the completed no-guidelines batch, all three chose the same broad family: exact reconnection of small contraction-tree regions. They compared candidates with controls and continued testing after initial results.</p>
+      <p>One visible difference concerned memory. The main research notebook changed in all three guided runs and in none of the three completed unguided runs. That is consistent with an explicit recording instruction affecting output. It is still an observation from two tiny, sequential batches—not a measured causal effect or a judgment of the underlying research quality.</p>
+
+      <details>
+        <summary>Connection failures and the extra run omitted from the six-run table</summary>
+        <p>The first no-guidelines attempt completed one five-minute algorithm-researcher run before the no-identity run failed with a WebSocket error after about 128 seconds. The coding-agent run did not start. A fresh batch then failed with <code>fetch failed</code> before any tool calls.</p>
+        <p>Both incomplete batches were preserved. A later full batch completed all three conditions and appears in the table. The extra completed run in the interrupted batch tested ensemble/clade recombination and also reached the cap. It is retained in the downloadable metadata rather than silently discarded. The two complete batches contain six runs, but they are not the entire attempt history.</p>
+      </details>
+      <details>
+        <summary>What this demo cannot tell us</summary>
+        <p>There was only one run per condition in each complete batch. The batches were sequential, not an interleaved factorial experiment. Model sampling, backend changes, source-code anchoring, and the common literature packet can all affect behavior. No independent research-quality score or novelty validation was completed.</p>
+        <p>Five-minute cutoffs censor the trajectories. None of the six runs had a chance to show how it would stop later, and sustained activity during that window does not resolve the premature-stopping problem seen in longer research sessions.</p>
+        <p>The observations do not show that identity labels never matter, that research guidelines have no effect, or that system prompts outperform skills. They show no obvious qualitative separation between these exact role labels in this small demonstration.</p>
+      </details>
+    </section>
+
+    <section id="lessons">
+      <div class="section-number">05 / What I would keep</div>
+      <h2>Separate the objective, the method, the memory, and the runtime.</h2>
+      <p>The practical outcome was a simpler way to reason about the setup. When behavior disappoints, I can ask which responsibility is underspecified instead of adding another procedure to every task.</p>
+      <dl class="responsibilities">
+        <div><dt>System prompt</dt><dd>Persistent priorities and explicit tradeoffs: what counts as progress, which claims require evidence, and how intermediate results should affect the investigation.</dd></div>
+        <div><dt>Skills</dt><dd>Reusable methods for particular tasks, such as checking a paper or preparing a figure. This experience is not a reason to remove useful task-specific methods.</dd></div>
+        <div><dt>Notebook</dt><dd>What the investigation has learned, with enough evidence to revise it. A synthesis of understanding rather than an administrative activity log.</dd></div>
+        <div><dt>Runtime</dt><dd>Execution limits, retries, interruption handling, and any decision to invoke the agent again. These should not be mistaken for guarantees supplied by a sentence in the prompt.</dd></div>
+      </dl>
+      <p class="closing">I would keep the smaller prompt because it is easier to inspect and revise. I would not claim that the agent became a better researcher because I called it one.</p>
+    </section>
+
+    <section class="materials" id="materials">
+      <div class="section-number">Materials / Scope</div>
+      <h2>Inspect the instructions and observations.</h2>
+      <p>This page includes a deliberately small public-safe export. Credentials, raw conversations, private evaluations, machine-specific paths, and complete experimental workspaces are not included. These files document the demo; they are not a complete reproducibility package.</p>
+      <ul class="material-links">
+        <li><a href="artifacts/with-guidelines.txt">System body: with guidelines</a><span>TXT</span></li>
+        <li><a href="artifacts/without-guidelines.txt">System body: without guidelines</a><span>TXT</span></li>
+        <li><a href="artifacts/runs.json">Metadata for all attempted batches</a><span>JSON</span></li>
+        <li><a href="artifacts/README.md">User requests, context files, and export notes</a><span>MD</span></li>
+      </ul>
+      <h3>Primary papers supplied to the agents</h3>
+      <ol class="references">
+        <li>R. N. C. Pfeifer, J. Haegeman, and F. Verstraete. <a href="https://arxiv.org/abs/1304.6112">Faster identification of optimal contraction sequences for tensor networks.</a></li>
+        <li>J. Gray and S. Kourtis. <a href="https://arxiv.org/abs/2002.01935">Hyper-optimized tensor network contraction.</a></li>
+        <li>M. Stoian, R. M. Milbradt, and C. B. Mendl. <a href="https://arxiv.org/abs/2209.12332">On the Optimal Linear Contraction Order of Tree Tensor Networks, and Beyond.</a></li>
+      </ol>
+      <p class="editorial-note">Editorial note: this draft was prepared with AI assistance from the tuning history and saved experiment metadata. Qualitative interpretations are labeled as observations, not independent benchmark findings. Author attribution and final wording await review.</p>
+    </section>
+    <footer><span>System Prompt / A research-agent field note</span><a href="#top">Back to top ↑</a></footer>
+  </main>
+</div>
+</body>
+</html>
