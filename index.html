@@ -66,18 +66,23 @@
     <section id="taste">
       <h2>Why does it keep coming back to the same idea?</h2>
       <p>My research problem was tensor-network contraction order: finding an order of operations that makes a large calculation cheaper. I wanted a competitive new algorithm. The agent quickly settled on one approach and rarely reconsidered it.</p>
-      <p>It explored symmetry-based dynamic programming (DP), combining contraction trees using DP, and reattaching fragments using DP. These were different algorithms, with real experiments and corrections along the way. Yet new possibilities kept becoming variations of the same architecture.</p>
+      <p>Our first adjustment was to ask it to develop several different directions and compare them before investing deeply. We updated the prompt and started another session.</p>
+      <p>That changed the opening. The agent considered three candidates—but only one received substantial testing. It had compared once, then committed. I wanted the comparison to continue as it learned.</p>
+      <p id="possibilities">So we refined the guideline. Selection should happen <em>progressively</em>. The pool should stay open to new possibilities, not just contain the ideas from the first brainstorm. I also wanted it to be welcoming about additions, active about modifying ideas, and strict about rejecting them. A weak first implementation shouldn’t kill an entire direction.</p>
+      <p>We installed that evolving-pool instruction and tried again. Later runs did record alternatives and develop new algorithms. But another pattern became clear: symmetry-based dynamic programming (DP), combining contraction trees using DP, reattaching fragments using DP. Different ideas kept becoming variations of the same architecture.</p>
+      <p>There was real learning within those variations. The problem was that the choice of architecture itself rarely became the subject of investigation.</p>
       <p><strong>The agent was willing to change the implementation. What remained harder was getting it to question the choice behind that implementation.</strong></p>
-      <p id="possibilities">We tried to address this with an evolving pool of ideas: welcome new directions, revise or combine them, and compare them as evidence accumulates. The agent did record alternatives. But maintaining the list didn’t make those alternatives a substantial part of the investigation. Most of the work still went into developing the approach it had already chosen.</p>
-      <p>DP itself wasn’t the problem. It might be the best choice. I didn’t want the agent to switch merely for variety; I wanted it to investigate whether the approach deserved further investment, rather than assume that the next task was another refinement.</p>
-      <p id="uncertainty">In the follow-up discussion, we considered asking a more direct question: what could we learn that would make us pursue a different approach? The next experiment should help answer that—not just tell us how to improve the current version. Getting the agent to make that distinction consistently is still unresolved.</p>
+      <p>The idea-pool guideline was supposed to prevent this. Yet it, too, could be followed mechanically: keep alternatives in the notebook while continuing to refine the chosen approach.</p>
+      <p id="uncertainty">That changed our discussion. Choosing a design and making it work can be a useful engineering habit. In this research, whether the design was worth pursuing was itself uncertain. I wanted the agent to explore that uncertainty, not just improve the implementation.</p>
+      <p>DP might still be the right choice. I wasn’t asking for variety for its own sake. I wanted investigations that could change our judgment about where to invest next. We discussed expressing that principle more directly, but explaining it in conversation and getting the working agent to act on it were clearly different problems.</p>
     </section>
 
     <section id="enough">
       <h2>So, is a system prompt all you need?</h2>
       <p>For removing the mechanical workflow in my setup, it was enough. I no longer needed an elaborate skill to prescribe the research sequence. That was a useful change.</p>
       <p>For getting the agent to question its chosen approach—not just improve it—we are still working on it.</p>
-      <p>We have discussed keeping research decisions in the main agent and delegating implementation to subagents, so the main context is less absorbed in making one approach work. That is an idea to test, not a fix we have demonstrated.</p>
+      <p>That is why the follow-up discussion moved beyond wording. The assistant first suggested a fresh-context critic to challenge the researcher’s decisions. I suggested a different split: let subagents handle implementation, while the main agent stays focused on the research questions and evidence.</p>
+      <p>The thought was that a context full of coding and debugging might keep pulling the agent toward making its current approach work. Separating those jobs could help—but we haven’t tested that yet. It is a possible next step, not the solution at the end of this story.</p>
       <p class="closing">The minimal prompt got us past “follow the procedure.” The question now is how to get past “make this idea work” and toward “find out which idea is worth pursuing.”</p>
     </section>
 
