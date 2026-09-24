@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#f8f6f1">
   <title>System Prompt Is All You Need?</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/style.css?v=2">
+  <link rel="stylesheet" href="assets/style.css?v=3">
 </head>
 <body>
 <a class="skip-link" href="#article">Skip to article</a>
@@ -32,13 +32,59 @@
       <p>For context, I work on tensor-network contraction order. You can evaluate the same network in different orders, and the amount of computation can change dramatically. I wanted a new algorithm for finding good orders—not just a faster implementation of an old one.</p>
       <p>The agent’s first response to my frustration was another set of workflow recommendations. More discriminating questions. Better diagnostics. More careful handling of negative results. Reasonable advice, but it already felt like we were adding another checklist.</p>
       <p>Then something happened inside this very conversation that explained my frustration better than any benchmark.</p>
-      <p>I asked the agent to survey how other people build AI research systems. It gave me four possible survey angles and ended with:</p>
-      <div class="prompt-block"><pre><code>Next: reply “all four,” or name the angles you want prioritized.</code></pre></div>
-      <p>I had asked for findings. It gave me homework.</p>
-      <p>We traced that response to a survey-skill instruction requiring a strategy-selection menu. The agent was following the procedure, but the procedure put a decision back on me that I had intended to delegate.</p>
-      <p>I didn’t know which direction would be most interesting. That was why I wanted a survey. As I told it:</p>
-      <blockquote><p>“in research, i also do not know the answer, otherwise, this is not a ‘research’.”</p></blockquote>
-      <p>That was the real problem. I could delegate execution, but the mental work of deciding what to investigate kept coming back to me.</p>
+      <p>Here’s the exchange from September 18. My messages are unchanged, including the typos. The assistant’s longer replies are shortened; <code>[…]</code> marks omitted text.</p>
+      <div class="conversation" aria-label="Excerpt from the survey conversation">
+        <div class="turn">
+          <p class="speaker"><strong>Me</strong></p>
+          <p>could you do a survey? i believe a lot people have tried to use ai for research, how do they design the framework?</p>
+        </div>
+        <div class="turn">
+          <p class="speaker"><strong>Agent</strong></p>
+          <p>[…]</p>
+          <p>I recommend four angles:</p>
+          <ol>
+            <li><strong>Framework landscape:</strong> minimal agents, fixed pipelines, multi-agent teams, and evolutionary search.</li>
+            <li><strong>Research memory:</strong> how systems retain evidence, failed attempts, hypotheses, and evolving understanding.</li>
+            <li><strong>Negative results:</strong> where agents become repetitive, produce unsupported claims, or need human intervention.</li>
+            <li><strong>Evaluation:</strong> whether reported gains demonstrate scientific discovery, benchmark optimization, or merely task completion.</li>
+          </ol>
+          <p>[…]</p>
+          <p><strong>Next: reply “all four,” or name the angles you want prioritized.</strong></p>
+        </div>
+        <div class="turn">
+          <p class="speaker"><strong>Me</strong></p>
+          <p>see, this is what i am tired about sci-brain. i just ... i expect YOU to survey and bring back interesting things, but you just through the problem back to me, even before doing anything</p>
+        </div>
+        <div class="turn">
+          <p class="speaker"><strong>Agent</strong></p>
+          <p>You asked for findings, not a research-strategy menu. I made an unnecessary approval gate. The survey is underway; I’m comparing actual designs, especially how they retain knowledge and choose what to investigate next.</p>
+        </div>
+        <p class="transcript-note"><em>[The agent then returned a survey of five research systems. That report is omitted here. I still wanted an explanation of the behavior.]</em></p>
+        <div class="turn">
+          <p class="speaker"><strong>Me</strong></p>
+          <p>could you answer the previous question? that is so very typical, what triggers that behavior?</p>
+        </div>
+        <div class="turn">
+          <p class="speaker"><strong>Agent</strong></p>
+          <p>The immediate trigger was sci-brain’s survey skill—not ambiguity in your request.</p>
+          <p>When you asked for a survey, I loaded <code>survey/SKILL.md</code>. It explicitly instructs:</p>
+          <p>“Present the strategy menu to the user as a multi-select question … let the user choose. Then run one search worker per selected strategy.”</p>
+          <p>[…]</p>
+          <p>Then I compounded it: after your complaint, I performed the survey but failed to directly explain the behavior you were questioning.</p>
+          <p>[…]</p>
+        </div>
+        <div class="turn">
+          <p class="speaker"><strong>Me</strong></p>
+          <p>this kind of behavior really upset me. in research, i also do not know the answer, otherwise, this is not a "research". and this is not "auto" at all, the mental pressures are still on me.</p>
+        </div>
+        <div class="turn">
+          <p class="speaker"><strong>Agent</strong></p>
+          <p>You should be able to delegate the uncertainty—not just the execution.</p>
+          <p>[…]</p>
+        </div>
+      </div>
+      <p>That last sentence was much closer to what I wanted. But notice how much prompting it took to get there: ask for a survey, reject the menu, ask why the menu appeared, and explain why the whole interaction was frustrating.</p>
+      <p>I could delegate execution, but the mental work of deciding what to investigate—and noticing when the agent wasn’t doing it—kept coming back to me.</p>
       <p>Were the skills “toxic”? I actually asked that. The history didn’t support such a simple answer. There were connection failures, mistakes in scientific judgment, and even stops that contradicted the skill’s own instruction to continue. Still, the survey menu was a concrete example of a rule getting in the way.</p>
     </section>
 
