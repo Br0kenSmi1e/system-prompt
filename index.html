@@ -61,14 +61,8 @@
       <h2>What if I just let it think?</h2>
       <p>I liked the minimalism of <a href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/">pi</a>. Looking at it alongside <a href="https://github.com/karpathy/autoresearch">Karpathy’s autoresearch</a> and <a href="https://github.com/davebcn87/pi-autoresearch">pi-autoresearch</a>, I started wondering whether I needed such an elaborate research workflow at all.</p>
       <p>My wording at the time was <strong>“free agent’s mind.”</strong> I believed Astra had the ability to research. Maybe I should give it a clear objective, useful tools, and room to decide what came next.</p>
-      <p>So we tried a clean setup: replace the system prompt, keep ordinary file and shell tools, add web access for reading, and let the agent investigate. I wanted to start normal <code>pi</code>, not launch a separate research platform.</p>
-      <p>Even getting there took some pushing back. The setup initially grew a launcher, an isolated runtime, and more Markdown files than I wanted. I asked for a small <code>.pi</code> configuration instead. Global skills were still loading at one point; a duplicate web extension broke startup at another. “Minimal” took some cleanup.</p>
-      <p>The arrangement we settled on was easy to understand:</p>
-      <div class="prompt-block"><pre><code>.pi/SYSTEM.md      How to approach the research
-.pi/settings.json  Model and tool configuration
-RESEARCH.md        The objective and what we have learned
-.worktrees/        Separate experiment workspaces</code></pre></div>
-      <p>I kept the worktree idea from sci-brain. I also cared a lot about research memory. I didn’t want the agent to start from zero each time, or to mistake an old recommendation for a permanent instruction. The notebook should explain what we had learned, what had failed, and what was still uncertain.</p>
+      <p>So we tried replacing the procedural workflow with a short system prompt. The agent still had tools to read papers, write code, and run experiments. What I wanted to leave open was how it used them: read more, test an idea, investigate a failure, or change direction.</p>
+      <p>I also cared a lot about research memory. Less procedure shouldn’t mean forgetting what we had learned. We kept an evolving notebook, <code>RESEARCH.md</code>, for findings, failures, and unresolved questions—not another list of steps to follow.</p>
       <p>Whenever the proposed prompt grew too detailed, I pushed back:</p>
       <blockquote><p>“too long, this is not a prompt that a human would write”</p></blockquote>
       <p>I wasn’t trying to replace a long skill with an equally long system prompt. I wanted something short enough to read and argue about.</p>
