@@ -64,46 +64,23 @@
     </section>
 
     <section id="taste">
-      <h2>The new problem: premature convergence.</h2>
-      <p>My research problem was tensor-network contraction order: finding an order of operations that makes a large calculation cheaper. I wanted a competitive new algorithm, not just a faster implementation or a diagnosis of why an existing method fails.</p>
-      <p>The agent was now doing real investigative work. It developed ideas, checked them against small exact solutions, corrected mistakes, and ran comparisons. But it tended to settle on one direction quickly, work until it had a modest result, and report back.</p>
-      <p>There were two kinds of “premature” here. <strong>Premature commitment:</strong> choosing an approach before investigating the alternatives enough. And <strong>premature stopping:</strong> treating a completed study as a completed research task.</p>
-      <p>In one later run, it developed a method for combining parts of different contraction trees. There was an interesting idea, but the measured advantage was small and its broader value remained unclear. The final report even named a concrete next investigation. No blocker was reported. It still stopped.</p>
-      <p>This was different from the earlier approval menus. The agent wasn’t waiting for permission to follow the next prescribed step. It was making its own decisions—but deciding too soon that it had done enough.</p>
-    </section>
-
-    <section id="possibilities">
-      <h2>An idea pool didn’t prevent it.</h2>
-      <p>We had already tried to address early commitment with an evolving pool of ideas: welcome new possibilities, actively revise them, and demand strong evidence before ruling them out. The point was to let investigation change where the effort went.</p>
-      <p>Yet the agent could maintain that pool and still spend nearly all its effort within one family of methods. In the follow-up discussion, I asked:</p>
-      <blockquote><p>“why it always focus on dp?”</p></blockquote>
-      <p>DP means dynamic programming: solving a problem by combining solutions to smaller subproblems. The agent had explored symmetry-based DP, ways to combine contraction trees using DP, and then ways to detach and reattach fragments using DP.</p>
-      <p>These weren’t identical algorithms. There was genuine learning between them. But each new direction seemed to become another variation of the same basic architecture. Even an idea about choosing useful cuts became a way to feed a DP calculation.</p>
-      <p>It wasn’t explicitly refusing other architectures. It kept translating new possibilities into the architecture it was already using.</p>
-      <p>That is a subtler failure than having no alternatives. The notebook could look open-minded while the actual experiments stayed narrow.</p>
-      <p>DP might still be the right choice. I didn’t want to ban it or force the agent to switch for the sake of variety. I wanted evidence that made the choice worth committing to.</p>
-      <p>The agent could revise a result: it later downgraded an earlier small gain as unstable after a timing-sensitive repeat. But reconsidering the performance claim didn’t necessarily lead it to reconsider the research direction.</p>
-    </section>
-
-    <section id="uncertainty">
-      <h2>Explore the uncertainty, not just the implementation.</h2>
-      <p>The pattern reminded me of a useful engineering habit: choose an architecture, diagnose its weaknesses, and keep refining it until it works.</p>
-      <p>But in this research, whether that architecture was worth pursuing was itself an open question. Improving the implementation could leave that question almost untouched.</p>
-      <p>That changed how I thought about the idea-pool guideline. A list of possibilities wasn’t the goal. I wanted the agent to choose investigations whose outcomes could change its judgment.</p>
-      <p>If a prototype performs poorly, is the mechanism weak, the implementation inadequate, or the test unsuitable? If it improves slightly, does that support the proposed idea—or did it simply get more search effort? What would make us deepen this direction, and what would make us investigate something else?</p>
-      <p>We discussed replacing the emphasis on maintaining a pool with a more direct principle:</p>
-      <blockquote><p>Choose investigations that resolve consequential uncertainties and can change which approach you pursue. Treat the current architecture as a hypothesis, not a commitment; an idea pool matters only when evidence changes what you investigate.</p></blockquote>
-      <p>This also changes what should happen after a result. A finished experiment gives the agent evidence for its next decision. It needn’t be the point where the whole investigation ends.</p>
-      <p>The frustrating part is that we can explain this clearly in conversation. Getting the working agent to act on it consistently is still unresolved.</p>
+      <h2>It was exploring—but within the same idea.</h2>
+      <p>My research problem was tensor-network contraction order: finding an order of operations that makes a large calculation cheaper. I wanted a competitive new algorithm. The agent could now investigate independently, but it tended to choose one direction quickly and keep developing it.</p>
+      <p id="possibilities">We tried addressing this with an evolving pool of ideas. The guideline asked it to welcome new possibilities, actively revise or combine them, and compare them progressively. A weak first implementation shouldn’t rule out an entire direction. The point was to let evidence change where the effort went.</p>
+      <p>The agent did keep a pool. But when we looked at the experiments, the same pattern remained. It explored symmetry-based dynamic programming (DP), combining contraction trees using DP, and reattaching fragments using DP. Each new direction became another variation of the architecture it was already using.</p>
+      <p>These were real algorithmic changes, not just code cleanup. The agent tested ideas and corrected mistakes. It even downgraded an earlier small performance gain after a timing-sensitive repeat. But the broader choice of approach was much more persistent.</p>
+      <p><strong>The agent was willing to change the implementation. What remained harder was getting it to question the choice behind that implementation.</strong></p>
+      <p>DP might still be the right choice. I didn’t want to ban it or demand variety for its own sake. I wanted the agent to investigate whether that choice deserved more investment, rather than assume it and ask how to make the next version work.</p>
+      <p id="uncertainty">In the follow-up discussion, we considered making that expectation more explicit: choose investigations whose possible outcomes would lead to different research decisions. A list of alternatives isn’t enough if none of them changes what gets tested. That is the behavior we are still trying to get reliably.</p>
+      <p>There was also a separate stopping problem. In one run, the agent reported a modest result and even named a concrete next investigation, then returned control without reporting a blocker. We prompted it to treat results as checkpoints and continue, but that still needed reinforcement.</p>
+      <p>So “keep going” wasn’t the whole answer. An agent can run longer and remain committed to the same approach. I wanted both: continue while useful questions remain, and let the answers change the direction.</p>
     </section>
 
     <section id="enough">
       <h2>So, is a system prompt all you need?</h2>
       <p>For removing the mechanical workflow in my setup, it was enough. I no longer needed an elaborate skill to prescribe the research sequence. That was a useful change.</p>
       <p>For avoiding premature commitment and stopping, we are still working on it.</p>
-      <p>One possibility we discussed is separating research decisions from routine implementation. Let the main agent keep the objective, competing explanations, and unresolved questions in view. Let subagents handle bounded coding and experiment tasks, then return the evidence—including failures.</p>
-      <p>My suggestion was to keep the main context from filling up with the details of making one implementation work. A worker finishing its assignment would give the main agent something to evaluate, rather than become the end of the research session.</p>
-      <p>That is a proposed experiment, not a demonstrated fix. A main agent that delegates only DP variants would still have the same problem. And keeping the process running is separate from making its research decisions better.</p>
+      <p>We have discussed keeping research decisions in the main agent and delegating implementation to subagents, so the main context is less absorbed in making one approach work. That is an idea to test, not a fix we have demonstrated.</p>
       <p class="closing">The minimal prompt got us past “follow the procedure.” The question now is how to get past “make this idea work” and toward “find out which idea is worth pursuing.”</p>
     </section>
 
