@@ -20,7 +20,7 @@ Then visit http://127.0.0.1:8000. Stop with Ctrl-C.
 
 ## Edit
 
-- `index.html`: article, result table, and publication metadata.
+- `index.html`: the first-person tuning story, an expandable identity-demo aside, and publication metadata.
 - `assets/style.css`: layout and typography, including mobile and print styles.
 - `artifacts/`: reviewed input texts and selected result metadata; no raw sessions or credentials.
 - `.nojekyll`: serve the files directly without a Jekyll build.
@@ -37,4 +37,4 @@ Edit locally, commit the changes, and push to `main`; GitHub Pages updates the s
 
 ## Evidence scope
 
-The post is an experience report, not a system-prompt-versus-skills benchmark. The identity demo has one run per condition in each complete batch. All interrupted batches are disclosed in the article and metadata. Prompt bodies/context files are included, but private full transcripts and experiment workspaces are not.
+The post is rooted in the original conversation: procedural frustration, the decision to try a minimal setup, and successive changes to research expectations. It is not a system-prompt-versus-skills benchmark. The historical research prompt is exported in `artifacts/research-system-prompt.txt`. The identity demo is retained only as an inconclusive aside, with one run per condition in each complete batch. All interrupted batches are disclosed in the article and metadata. Prompt bodies/context files are included, but private full transcripts and experiment workspaces are not.

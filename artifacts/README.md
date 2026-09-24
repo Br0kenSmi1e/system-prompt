@@ -1,8 +1,12 @@
 # Supporting materials
 
-This is a selected, public-safe export from the identity demos. It is not a complete reproducibility package or an independently scored benchmark.
+These are selected, public-safe materials supporting the tuning story and its small identity-demo detour. They are not a complete reproducibility package or an independently scored benchmark.
 
-## Exact input texts
+## Historical research prompt
+
+[research-system-prompt.txt](research-system-prompt.txt) is the installed `.pi/SYSTEM.md` from the research workspace at local commit `f536236bc5e8cfeef700a6cae90b895bbee1fe62` (22 September 2026). It is byte-identical to that snapshot. It does not contain the stronger checkpoint/continuation wording subsequently proposed in the conversation. The identity-demo system bodies below are separate experimental variants, not this production prompt.
+
+## Identity-demo input texts
 
 The role prefix was one of `You are a coding agent.`, `You are an algorithm researcher.`, or absent. Two line breaks separated a nonempty prefix from the common body.
 
@@ -17,7 +21,7 @@ The source code, graphs, and literature packet were identical across the two ver
 
 ## Outcome metadata
 
-[runs.json](runs.json) contains all scheduled conditions across four batches, including not-started conditions, the extra completed run in an interrupted batch, and both connection failures. `included_in_six_run_table` identifies the two complete batches. Timing includes cleanup overhead. `notebook_changed` is a byte comparison against the initial notebook; it does not score usefulness. Tool calls count invocations, not experiments.
+[runs.json](runs.json) contains all scheduled conditions across four batches, including not-started conditions, the extra completed run in an interrupted batch, and both connection failures. `included_in_six_run_table` identifies the two complete batches used in the first blog version's table; the revised article moves this demo into a short aside. Timing includes cleanup overhead. `notebook_changed` is a byte comparison against the initial notebook; it does not score usefulness. Tool calls count invocations, not experiments.
 
 The page's qualitative observations come from transcript inspection; no independent research-quality scoring was completed. Source sessions, authentication files, provider account details, complete workspaces, and private evaluations are deliberately omitted. The public export therefore does not let a reader independently validate every algorithmic observation.
 
