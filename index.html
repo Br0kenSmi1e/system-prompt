@@ -60,18 +60,17 @@
       <p>So we tried it. We replaced the procedural research workflow with a system prompt describing how to approach the problem. We kept a notebook, <code>RESEARCH.md</code>, for the objective and the understanding accumulated along the way.</p>
       <p>The important change wasn’t the number of words. It was what the instructions tried to control: <strong>what the agent should care about, rather than which step it should perform next.</strong></p>
       <p>For this setup, the minimal system prompt solved the mechanical-workflow problem. The agent could choose what to read, implement, and test without making me manage a prescribed sequence of steps.</p>
-      <p>But that exposed a different problem. It had more freedom to investigate—and still converged too early.</p>
+      <p>The remaining difficulty was how it used that freedom once it had chosen a direction.</p>
     </section>
 
     <section id="taste">
-      <h2>It was exploring—but within the same idea.</h2>
-      <p>My research problem was tensor-network contraction order: finding an order of operations that makes a large calculation cheaper. I wanted a competitive new algorithm. The agent could now investigate independently, but it tended to choose one direction quickly and keep developing it.</p>
-      <p id="possibilities">We tried addressing this with an evolving pool of ideas. The guideline asked it to welcome new possibilities, actively revise or combine them, and compare them progressively. A weak first implementation shouldn’t rule out an entire direction. The point was to let evidence change where the effort went.</p>
-      <p>The agent did keep a pool. But when we looked at the experiments, the same pattern remained. It explored symmetry-based dynamic programming (DP), combining contraction trees using DP, and reattaching fragments using DP. Each new direction became another variation of the architecture it was already using.</p>
-      <p>These were real algorithmic changes, not just code cleanup. The agent tested ideas and corrected mistakes. It even downgraded an earlier small performance gain after a timing-sensitive repeat. But the broader choice of approach was much more persistent.</p>
+      <h2>It was exploring—but within the same approach.</h2>
+      <p>My research problem was tensor-network contraction order: finding an order of operations that makes a large calculation cheaper. I wanted a competitive new algorithm. The agent quickly settled on one approach and rarely reconsidered it.</p>
+      <p>It explored symmetry-based dynamic programming (DP), combining contraction trees using DP, and reattaching fragments using DP. These were different algorithms, with real experiments and corrections along the way. Yet new possibilities kept becoming variations of the same architecture.</p>
       <p><strong>The agent was willing to change the implementation. What remained harder was getting it to question the choice behind that implementation.</strong></p>
-      <p>DP might still be the right choice. I didn’t want to ban it or demand variety for its own sake. I wanted the agent to investigate whether that choice deserved more investment, rather than assume it and ask how to make the next version work.</p>
-      <p id="uncertainty">In the follow-up discussion, we considered making that expectation more explicit: choose investigations whose possible outcomes would lead to different research decisions. A list of alternatives isn’t enough if none of them changes what gets tested. That is the behavior we are still trying to get reliably.</p>
+      <p id="possibilities">We tried to address this with an evolving pool of ideas: welcome new directions, revise or combine them, and compare them as evidence accumulates. The agent did record alternatives. But maintaining the list didn’t make those alternatives a substantial part of the investigation. Most of the work still went into developing the approach it had already chosen.</p>
+      <p>DP itself wasn’t the problem. It might be the best choice. I didn’t want the agent to switch merely for variety; I wanted it to investigate whether the approach deserved further investment, rather than assume that the next task was another refinement.</p>
+      <p id="uncertainty">In the follow-up discussion, we considered asking a more direct question: what could we learn that would make us pursue a different approach? The next experiment should help answer that—not just tell us how to improve the current version. Getting the agent to make that distinction consistently is still unresolved.</p>
     </section>
 
     <section id="enough">
