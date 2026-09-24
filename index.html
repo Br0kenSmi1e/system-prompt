@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="I wanted a curious research collaborator. I got a diligent checklist follower. This is what happened when I tried to simplify the instructions instead of adding another skill.">
+  <meta name="description" content="Can a system prompt guide research judgment without prescribing the research? My experience moving from a procedural autoresearch workflow toward an agent with more room to investigate.">
   <meta name="theme-color" content="#f8f6f1">
   <title>System Prompt Is All You Need?</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -18,21 +18,16 @@
       <p class="byline"><time datetime="2026-09">September 2026</time> · Draft</p>
     </header>
 
-    <div class="lede">
-      <p>I was using <a href="https://github.com/QuantumBFS/sci-brain">sci-brain’s</a> autoresearch workflow to look for new algorithms. It kept failing.</p>
-      <p>But failed experiments weren’t really what bothered me. Research fails all the time. What bothered me was how mechanical the whole thing felt.</p>
-    </div>
-    <p>The agent implemented ideas, ran benchmarks, wrote reports, and handed the work back. When we first audited the campaign, it had completed ten standalone attempts and 360 valid runs. None beat the stronger baseline. The machinery was working. I wasn’t getting much closer to an algorithm I cared about.</p>
-    <p>I put it this way in the conversation:</p>
+    <p>I was using <a href="https://github.com/QuantumBFS/sci-brain">sci-brain’s</a> autoresearch workflow to look for new algorithms. It kept failing.</p>
+    <p>Failed experiments weren’t really what bothered me. Research fails all the time. What bothered me was how mechanical the whole thing felt: implement an idea, run the evaluation, write a report, hand the work back.</p>
+    <p>The agent was doing the tasks. I was still responsible for noticing what mattered and deciding where the research should go.</p>
+    <p>I put it this way:</p>
     <blockquote><p>“i feel like the agent is just following the skill mechanically. to me, it just wants to get the work done to throw back something to me, rather than being a curious researcher.”</p></blockquote>
-    <p>That became the start of a much longer experiment: not just searching for algorithms, but figuring out how I wanted an agent to search.</p>
+    <p>That made me wonder whether the workflow was helping the agent investigate—or giving it a procedure to finish instead.</p>
 
     <section id="supervision">
       <h2>Why is the research still my job?</h2>
-      <p>For context, I work on tensor-network contraction order. You can evaluate the same network in different orders, and the amount of computation can change dramatically. I wanted a new algorithm for finding good orders—not just a faster implementation of an old one.</p>
-      <p>The agent’s first response to my frustration was another set of workflow recommendations. More discriminating questions. Better diagnostics. More careful handling of negative results. Reasonable advice, but it already felt like we were adding another checklist.</p>
-      <p>Then something happened inside this very conversation that explained my frustration better than any benchmark.</p>
-      <p>Here’s my request and the agent’s reply from September 18. My message is unchanged; <code>[…]</code> marks omitted text in the reply.</p>
+      <p>The problem became especially clear when I asked the agent to look into other AI research systems. Here’s my request and its reply. My message is unchanged; <code>[…]</code> marks omitted text in the reply.</p>
       <div class="conversation" aria-label="Excerpt from the survey conversation">
         <div class="turn">
           <p class="speaker"><strong>Me</strong></p>
@@ -52,79 +47,69 @@
           <p><strong>Next: reply “all four,” or name the angles you want prioritized.</strong></p>
         </div>
       </div>
-      <p>I had asked for findings. It gave me homework. We later traced the menu to an explicit instruction in the survey skill—but choosing how to investigate was exactly the work I wanted to delegate.</p>
-      <p>I could delegate execution, but the mental work of deciding what to investigate—and noticing when the agent wasn’t doing it—kept coming back to me.</p>
-      <p>Were the skills “toxic”? I actually asked that. The history didn’t support such a simple answer. There were connection failures, mistakes in scientific judgment, and even stops that contradicted the skill’s own instruction to continue. Still, the survey menu was a concrete example of a rule getting in the way.</p>
+      <p>I had asked for findings. It gave me homework.</p>
+      <p>Those were reasonable search angles. The problem was making me choose before it did anything. I didn’t know which would be interesting. Finding that out was part of the work I wanted to delegate.</p>
+      <p>We traced the menu to an explicit instruction in the survey skill. In this case, the agent was following the rule—and that was exactly the problem. The workflow assigned a research decision to me that I wanted the agent to make.</p>
+      <p>This didn’t explain every failure in the earlier campaign. But it gave me a concrete reason to question the design: how many of our rules were helping the investigation, and how many were just making it wait for me?</p>
     </section>
 
     <section id="free">
       <h2>What if I just let it think?</h2>
-      <p>I liked the minimalism of <a href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/">pi</a>. Looking at it alongside <a href="https://github.com/karpathy/autoresearch">Karpathy’s autoresearch</a> and <a href="https://github.com/davebcn87/pi-autoresearch">pi-autoresearch</a>, I started wondering whether I needed such an elaborate research workflow at all.</p>
-      <p>My wording at the time was <strong>“free agent’s mind.”</strong> I believed Astra had the ability to research. Maybe I should give it a clear objective, useful tools, and room to decide what came next.</p>
-      <p>So we tried replacing the procedural workflow with a short system prompt. The agent still had tools to read papers, write code, and run experiments. What I wanted to leave open was how it used them: read more, test an idea, investigate a failure, or change direction.</p>
-      <p>I also cared a lot about research memory. Less procedure shouldn’t mean forgetting what we had learned. We kept an evolving notebook, <code>RESEARCH.md</code>, for findings, failures, and unresolved questions—not another list of steps to follow.</p>
-      <p>Whenever the proposed prompt grew too detailed, I pushed back:</p>
-      <blockquote><p>“too long, this is not a prompt that a human would write”</p></blockquote>
-      <p>I wasn’t trying to replace a long skill with an equally long system prompt. I wanted something short enough to read and argue about.</p>
+      <p>I liked the minimal design of <a href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/">pi</a>. It made me wonder whether I could get the research behavior I wanted by changing the system prompt instead of building another elaborate skill.</p>
+      <p>My wording at the time was <strong>“free agent’s mind.”</strong> I believed Astra had the ability to research. Maybe I should give it the objective and the tools, then leave it room to decide whether to read, derive, code, experiment, or reconsider an assumption.</p>
+      <p>So we tried it. We replaced the procedural research workflow with a system prompt describing how to approach the problem. We kept a notebook, <code>RESEARCH.md</code>, for the objective and the understanding accumulated along the way.</p>
+      <p>The important change wasn’t the number of words. It was what the instructions tried to control: <strong>what the agent should care about, rather than which step it should perform next.</strong></p>
+      <p>Of course, removing the procedure didn’t automatically give the agent good judgment. The next sessions made that clear.</p>
     </section>
 
     <section id="taste">
-      <h2>The agent could work. But did it have taste?</h2>
-      <p>The minimal setup didn’t magically produce the research I wanted.</p>
-      <p>One session found engineering speedups. Another produced a careful study of how preprocessing could exclude good contraction orders. There were proofs, reproducible experiments, and sensible caveats. The reports were not empty.</p>
-      <p>They still weren’t what I was asking for.</p>
-      <p>I wanted a competitive new algorithm with an idea worth understanding. An implementation speedup or a small diagnostic could help get there, but I didn’t want either one treated as the destination. At one point I described the agent as having bad “taste.”</p>
-      <p>That is an awkward thing to put into a prompt. “Do more interesting research” tells the agent almost nothing. We had to make the distinction more concrete.</p>
-      <p>The objective went into <code>RESEARCH.md</code>: develop a substantively new contraction-order algorithm, minimize total contraction work, and don’t turn the problem into a space-constrained or read/write-weighted optimization task. We also made it explicit that diagnostics and faster implementations were supporting work, not the objective.</p>
-      <p>The system prompt got a different instruction:</p>
+      <h2>Freedom wasn’t enough. We had to talk about taste.</h2>
+      <p>My research problem was tensor-network contraction order: finding an order of operations that makes a large calculation cheaper. I wanted a competitive new algorithm with an idea worth understanding.</p>
+      <p>One session found engineering speedups. Another produced a careful study of how preprocessing could exclude good contraction orders. There were proofs, experiments, and sensible caveats. These weren’t empty reports.</p>
+      <p>But the agent kept treating useful supporting work as the result I had asked for. A faster implementation could help us search. A diagnostic could reveal a weakness. Neither, on its own, was the algorithmic contribution I wanted.</p>
+      <p>I called this a problem of “taste.” The agent could do the work, but its choice of what was worth doing didn’t match mine.</p>
+      <p>“Find something more interesting” wasn’t much of an instruction. We made the objective more explicit in the notebook: a substantively new contraction-order algorithm, competitive with strong existing methods. Diagnostics and implementation speedups were supporting work, not the objective.</p>
+      <p>The system prompt added a question to answer before substantial implementation:</p>
       <blockquote><p>Before substantial implementation, state the proposed algorithmic advance, why it matters, its assumptions, and expected scaling.</p></blockquote>
-      <p>I wanted the agent to notice the gap between “I can implement this” and “this is worth investigating” before spending the session on it.</p>
-      <p>We kept saving the experiments, restoring a clean starting point, and trying again. That let us inspect what happened without erasing the history. It also revealed another complication: a fresh conversation wasn’t necessarily a fresh start. The agent could find old worktrees and inherit their research direction.</p>
+      <p>That didn’t tell the agent which algorithm to invent. It asked it to confront the difference between “I can implement this” and “this could advance the research.”</p>
     </section>
 
     <section id="possibilities">
-      <h2>A list of ideas is not an open investigation.</h2>
-      <p>The next pattern was subtler. The agent could list several directions, choose one, and investigate it quite intelligently. But the alternatives mostly stayed on the list.</p>
-      <p>I wanted something more active: investigate a few possibilities, learn enough to compare them, improve them, combine them, and let the investigation generate new possibilities. Narrow the search progressively, rather than picking a favorite after the opening brainstorm.</p>
-      <p>We spent a surprising amount of the conversation trying to express this. “Start with several ideas” wasn’t enough. Neither was “reconsider alternatives when the favorite fails.” I wanted the possibilities to stay open even while something was working.</p>
-      <p>The distinction finally became clearer when I said we should be welcoming about adding ideas, strict about killing them, and active about modifying them.</p>
-      <p>A bad first implementation should not kill an entire direction. Setting an idea aside should not quietly become a claim that it cannot work. And keeping an idea alive does not mean giving everything equal time.</p>
-      <p>This became one of the central guidelines:</p>
+      <h2>Keep the possibilities open.</h2>
+      <p>Another pattern kept appearing: list several directions, pick one, and spend the rest of the session developing it. The agent could revise that one idea intelligently. The alternatives mostly stayed on the list.</p>
+      <p>I wanted an evolving investigation, not an opening brainstorm followed by commitment. Test enough to learn something, compare the possibilities, modify them, and let the results suggest new directions. Concentrate effort as the evidence improves—not just because one idea already has code.</p>
+      <p>We went back and forth on this until I found a way to express what I meant: be welcoming about adding ideas, strict about killing them, and active about changing them.</p>
+      <p>A weak first implementation shouldn’t eliminate an entire direction. Setting an idea aside isn’t the same as disproving it. And keeping possibilities open doesn’t require spending equal time on everything.</p>
+      <p>This became a central guideline:</p>
       <blockquote><p>Maintain an evolving pool of distinct ideas there. Welcome new directions and actively revise or combine ideas as you learn. Progressively compare and deepen promising candidates without committing prematurely.</p></blockquote>
-      <p>The rest of that guideline asks for strong evidence before rejecting an idea. The <a href="artifacts/research-system-prompt.txt">full prompt</a> is short enough to read in one sitting.</p>
-      <p>There were encouraging moments. A survey-first session moved away from the previous line of work and proposed a symmetry-based exact planner. That was a genuinely different direction, not just another implementation tweak. Its reported advantage was narrow, and novelty was still unresolved, but it was closer to the kind of work I wanted.</p>
+      <p>The rest of that guideline asks for strong evidence before rejecting an idea. Again, the instruction was about how to judge the work, not a fixed sequence of experiments.</p>
+      <p>There were encouraging moments. A survey-first session proposed a symmetry-based exact planner, moving away from the previous line of work. Its reported advantage was narrow and novelty was unresolved, but it was a genuinely different direction.</p>
       <p>Then it finished the study and stopped.</p>
-      <p>We had asked it to “keep going,” but also to “report a substantive result or a genuine blocker.” Looking back, that offered two different interpretations of when the job was done. I wanted a result to change the next research decision, not automatically end the session.</p>
-      <p>The next proposed correction was simple:</p>
+      <p>The original pattern hadn’t disappeared. The agent could do a better study and still treat that study as the end of the job. I wanted the result to inform its next decision: strengthen this idea, explore another, or revise the pool.</p>
+      <p>Our next proposed correction was:</p>
       <div class="prompt-block"><pre><code>Keep this result as a checkpoint, not the finish line.
 Reassess and evolve the idea pool, then continue investigating.</code></pre></div>
-      <p>That was a correction to try, not a solved stopping problem. And there is a practical limit: when the model ends its turn, this pi setup does not automatically start another one. A sentence in the prompt is not a continuation mechanism.</p>
+      <p>That was still something to try, not a solved autonomy problem. But it expressed the distinction I kept coming back to: finishing an experiment is not necessarily finishing the research.</p>
     </section>
 
     <section id="enough">
       <h2>So, is a system prompt all you need?</h2>
-      <p>I don’t know yet. This did not end with a breakthrough algorithm or a completely autonomous researcher.</p>
-      <p>But I found the smaller setup easier to reason about. When the agent did something I disliked, I could inspect the instructions and the actual conversation, then change a specific expectation. Was the objective unclear? Was I accidentally asking for a report rather than continued investigation? Did “compare ideas” mean once at the beginning, or throughout the work?</p>
-      <p>The point wasn’t to remove every constraint. I still wanted honest evidence, sensible resource use, isolated experiments, and useful memory. I wanted to stop prescribing the investigative path in so much detail.</p>
-      <p>Skills can still be useful for a particular job. This experience just made me less eager to turn the whole research process into one. Nor did moving instructions into a system prompt prove that they work better there—we changed too many things along the way to claim that.</p>
-      <p>What I was really tuning was the amount of judgment I was willing to delegate, and how clearly I could tell the agent what mattered.</p>
-      <p class="closing">I don’t want to decide every next step and have the agent execute it. I want to give it a problem I don’t know how to solve—and have it help me figure out where to go.</p>
+      <p>I don’t know yet. This didn’t end with a breakthrough algorithm or a completely autonomous researcher.</p>
+      <p>What changed was how I approached the instructions. Instead of adding another stage whenever the agent disappointed me, I tried to identify the research judgment I wanted it to make: distinguish significance from correctness, keep alternatives alive, and use findings to decide what comes next.</p>
+      <p>Those expectations could live in the system prompt. The specific problem and what we learned could live in the notebook. The agent could choose the investigative path.</p>
+      <p>This isn’t proof that system prompts outperform skills. A skill can express the same principles, and a system prompt can be just as procedural. For me, changing the setup was a way to reconsider what I was asking the agent to own.</p>
+      <p>I still want constraints on evidence, resources, and safety. I don’t want to prescribe every ordinary research decision just because I can.</p>
+      <p class="closing">I want to give the agent a problem I don’t know how to solve—and have it help me figure out where to go, rather than ask me for the route.</p>
     </section>
 
     <section class="materials" id="materials">
-      <h2>If you want to look under the hood</h2>
+      <h2>The prompt and the background</h2>
       <ul class="material-links">
         <li><a href="artifacts/research-system-prompt.txt">The research system prompt we arrived at</a></li>
         <li><a href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/">The pi design post that helped start this</a></li>
         <li><a href="https://github.com/Br0kenSmi1e/system-prompt">This blog’s source and revision history</a></li>
       </ul>
-      <details>
-        <summary>A side experiment that didn’t settle anything</summary>
-        <p>We also tried calling the agent a “coding agent,” an “algorithm researcher,” or giving it no identity sentence. Each got five minutes on the same task, using <code>gpt-6-astra</code> with low reasoning. We did one complete batch with research guidelines and another without them.</p>
-        <p>All six runs reached the time cap, with no obvious qualitative separation between identities. That didn’t tell us enough to answer the question. It certainly didn’t explain the broader experience described here.</p>
-        <p>Two interrupted batches came before the completed no-guidelines batch: one contained an extra five-minute run followed by a WebSocket failure; another failed before any tool calls. They are retained in the <a href="artifacts/runs.json">attempt metadata</a>. The <a href="artifacts/README.md">input texts and notes</a> remain available, but this was a small demo, not a benchmark.</p>
-      </details>
-      <p class="editorial-note">Written with AI assistance from the original conversation and saved records. Conversation excerpts retain the informal wording. This is my experience of tuning one setup, not a controlled comparison of frameworks. The raw sessions, credentials, and private evaluations are not published.</p>
+      <p class="editorial-note">Written with AI assistance from the original conversation and saved records. Conversation excerpts retain the informal wording. The raw sessions, credentials, and private evaluations are not published.</p>
     </section>
     <footer><a href="#top">Back to top</a></footer>
   </main>

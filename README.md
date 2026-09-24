@@ -20,7 +20,7 @@ Then visit http://127.0.0.1:8000. Stop with Ctrl-C.
 
 ## Edit
 
-- `index.html`: the first-person tuning story, an expandable identity-demo aside, and publication metadata.
+- `index.html`: the first-person story about guiding research judgment rather than prescribing a procedure.
 - `assets/style.css`: layout and typography, including mobile and print styles.
 - `artifacts/`: reviewed input texts and selected result metadata; no raw sessions or credentials.
 - `.nojekyll`: serve the files directly without a Jekyll build.
@@ -37,4 +37,4 @@ Edit locally, commit the changes, and push to `main`; GitHub Pages updates the s
 
 ## Evidence scope
 
-The post is rooted in the original conversation: procedural frustration, the decision to try a minimal setup, and successive changes to research expectations. It is not a system-prompt-versus-skills benchmark. The historical research prompt is exported in `artifacts/research-system-prompt.txt`. The identity demo is retained only as an inconclusive aside, with one run per condition in each complete batch. All interrupted batches are disclosed in the article and metadata. Prompt bodies/context files are included, but private full transcripts and experiment workspaces are not.
+The post is rooted in the original conversation: procedural frustration, the decision to try a minimal setup, and successive changes to research expectations. It is not a system-prompt-versus-skills benchmark. The historical research prompt is exported in `artifacts/research-system-prompt.txt`. The inconclusive identity demo is no longer part of the article. Its previously published inputs and metadata, including interrupted batches, remain in `artifacts/` for historical reference. Prompt bodies/context files are included, but private full transcripts and experiment workspaces are not.

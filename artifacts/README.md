@@ -1,6 +1,6 @@
 # Supporting materials
 
-These are selected, public-safe materials supporting the tuning story and its small identity-demo detour. They are not a complete reproducibility package or an independently scored benchmark.
+These are selected, public-safe materials supporting the tuning story. The identity-demo files are retained from earlier blog versions; that inconclusive detour is no longer part of the article. They are not a complete reproducibility package or an independently scored benchmark.
 
 ## Historical research prompt
 
@@ -21,9 +21,9 @@ The source code, graphs, and literature packet were identical across the two ver
 
 ## Outcome metadata
 
-[runs.json](runs.json) contains all scheduled conditions across four batches, including not-started conditions, the extra completed run in an interrupted batch, and both connection failures. `included_in_six_run_table` identifies the two complete batches used in the first blog version's table; the revised article moves this demo into a short aside. Timing includes cleanup overhead. `notebook_changed` is a byte comparison against the initial notebook; it does not score usefulness. Tool calls count invocations, not experiments.
+[runs.json](runs.json) contains all scheduled conditions across four batches, including not-started conditions, the extra completed run in an interrupted batch, and both connection failures. `included_in_six_run_table` identifies the two complete batches used in the first blog version's table; the current article omits this demo. Timing includes cleanup overhead. `notebook_changed` is a byte comparison against the initial notebook; it does not score usefulness. Tool calls count invocations, not experiments.
 
-The page's qualitative observations come from transcript inspection; no independent research-quality scoring was completed. Source sessions, authentication files, provider account details, complete workspaces, and private evaluations are deliberately omitted. The public export therefore does not let a reader independently validate every algorithmic observation.
+The earlier blog versions' qualitative observations came from transcript inspection; no independent research-quality scoring was completed. Source sessions, authentication files, provider account details, complete workspaces, and private evaluations are deliberately omitted. The public export therefore does not let a reader independently validate every algorithmic observation.
 
 ## Limits
 
