@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Can a system prompt guide research judgment without prescribing the research? My experience moving from a procedural autoresearch workflow toward an agent with more room to investigate.">
+  <meta name="description" content="A minimal prompt freed my agent from a rigid research workflow. Getting it to avoid premature commitment and stopping is still an open problem.">
   <meta name="theme-color" content="#f8f6f1">
   <title>System Prompt Is All You Need?</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -59,53 +59,58 @@
       <p>My wording at the time was <strong>“free agent’s mind.”</strong> I believed Astra had the ability to research. Maybe I should give it the objective and the tools, then leave it room to decide whether to read, derive, code, experiment, or reconsider an assumption.</p>
       <p>So we tried it. We replaced the procedural research workflow with a system prompt describing how to approach the problem. We kept a notebook, <code>RESEARCH.md</code>, for the objective and the understanding accumulated along the way.</p>
       <p>The important change wasn’t the number of words. It was what the instructions tried to control: <strong>what the agent should care about, rather than which step it should perform next.</strong></p>
-      <p>Of course, removing the procedure didn’t automatically give the agent good judgment. The next sessions made that clear.</p>
+      <p>For this setup, the minimal system prompt solved the mechanical-workflow problem. The agent could choose what to read, implement, and test without making me manage a prescribed sequence of steps.</p>
+      <p>But that exposed a different problem. It had more freedom to investigate—and still converged too early.</p>
     </section>
 
     <section id="taste">
-      <h2>Freedom wasn’t enough. We had to talk about taste.</h2>
-      <p>My research problem was tensor-network contraction order: finding an order of operations that makes a large calculation cheaper. I wanted a competitive new algorithm with an idea worth understanding.</p>
-      <p>One session found engineering speedups. Another produced a careful study of how preprocessing could exclude good contraction orders. There were proofs, experiments, and sensible caveats. These weren’t empty reports.</p>
-      <p>But the agent kept treating useful supporting work as the result I had asked for. A faster implementation could help us search. A diagnostic could reveal a weakness. Neither, on its own, was the algorithmic contribution I wanted.</p>
-      <p>I called this a problem of “taste.” The agent could do the work, but its choice of what was worth doing didn’t match mine.</p>
-      <p>“Find something more interesting” wasn’t much of an instruction. We made the objective more explicit in the notebook: a substantively new contraction-order algorithm, competitive with strong existing methods. Diagnostics and implementation speedups were supporting work, not the objective.</p>
-      <p>The system prompt added a question to answer before substantial implementation:</p>
-      <blockquote><p>Before substantial implementation, state the proposed algorithmic advance, why it matters, its assumptions, and expected scaling.</p></blockquote>
-      <p>That didn’t tell the agent which algorithm to invent. It asked it to confront the difference between “I can implement this” and “this could advance the research.”</p>
+      <h2>The new problem: premature convergence.</h2>
+      <p>My research problem was tensor-network contraction order: finding an order of operations that makes a large calculation cheaper. I wanted a competitive new algorithm, not just a faster implementation or a diagnosis of why an existing method fails.</p>
+      <p>The agent was now doing real investigative work. It developed ideas, checked them against small exact solutions, corrected mistakes, and ran comparisons. But it tended to settle on one direction quickly, work until it had a modest result, and report back.</p>
+      <p>There were two kinds of “premature” here. <strong>Premature commitment:</strong> choosing an approach before investigating the alternatives enough. And <strong>premature stopping:</strong> treating a completed study as a completed research task.</p>
+      <p>In one later run, it developed a method for combining parts of different contraction trees. There was an interesting idea, but the measured advantage was small and its broader value remained unclear. The final report even named a concrete next investigation. No blocker was reported. It still stopped.</p>
+      <p>This was different from the earlier approval menus. The agent wasn’t waiting for permission to follow the next prescribed step. It was making its own decisions—but deciding too soon that it had done enough.</p>
     </section>
 
     <section id="possibilities">
-      <h2>Keep the possibilities open.</h2>
-      <p>Another pattern kept appearing: list several directions, pick one, and spend the rest of the session developing it. The agent could revise that one idea intelligently. The alternatives mostly stayed on the list.</p>
-      <p>I wanted an evolving investigation, not an opening brainstorm followed by commitment. Test enough to learn something, compare the possibilities, modify them, and let the results suggest new directions. Concentrate effort as the evidence improves—not just because one idea already has code.</p>
-      <p>We went back and forth on this until I found a way to express what I meant: be welcoming about adding ideas, strict about killing them, and active about changing them.</p>
-      <p>A weak first implementation shouldn’t eliminate an entire direction. Setting an idea aside isn’t the same as disproving it. And keeping possibilities open doesn’t require spending equal time on everything.</p>
-      <p>This became a central guideline:</p>
-      <blockquote><p>Maintain an evolving pool of distinct ideas there. Welcome new directions and actively revise or combine ideas as you learn. Progressively compare and deepen promising candidates without committing prematurely.</p></blockquote>
-      <p>The rest of that guideline asks for strong evidence before rejecting an idea. Again, the instruction was about how to judge the work, not a fixed sequence of experiments.</p>
-      <p>There were encouraging moments. A survey-first session proposed a symmetry-based exact planner, moving away from the previous line of work. Its reported advantage was narrow and novelty was unresolved, but it was a genuinely different direction.</p>
-      <p>Then it finished the study and stopped.</p>
-      <p>The original pattern hadn’t disappeared. The agent could do a better study and still treat that study as the end of the job. I wanted the result to inform its next decision: strengthen this idea, explore another, or revise the pool.</p>
-      <p>Our next proposed correction was:</p>
-      <div class="prompt-block"><pre><code>Keep this result as a checkpoint, not the finish line.
-Reassess and evolve the idea pool, then continue investigating.</code></pre></div>
-      <p>That was still something to try, not a solved autonomy problem. But it expressed the distinction I kept coming back to: finishing an experiment is not necessarily finishing the research.</p>
+      <h2>An idea pool didn’t prevent it.</h2>
+      <p>We had already tried to address early commitment with an evolving pool of ideas: welcome new possibilities, actively revise them, and demand strong evidence before ruling them out. The point was to let investigation change where the effort went.</p>
+      <p>Yet the agent could maintain that pool and still spend nearly all its effort within one family of methods. In the follow-up discussion, I asked:</p>
+      <blockquote><p>“why it always focus on dp?”</p></blockquote>
+      <p>DP means dynamic programming: solving a problem by combining solutions to smaller subproblems. The agent had explored symmetry-based DP, ways to combine contraction trees using DP, and then ways to detach and reattach fragments using DP.</p>
+      <p>These weren’t identical algorithms. There was genuine learning between them. But each new direction seemed to become another variation of the same basic architecture. Even an idea about choosing useful cuts became a way to feed a DP calculation.</p>
+      <p>It wasn’t explicitly refusing other architectures. It kept translating new possibilities into the architecture it was already using.</p>
+      <p>That is a subtler failure than having no alternatives. The notebook could look open-minded while the actual experiments stayed narrow.</p>
+      <p>DP might still be the right choice. I didn’t want to ban it or force the agent to switch for the sake of variety. I wanted evidence that made the choice worth committing to.</p>
+      <p>The agent could revise a result: it later downgraded an earlier small gain as unstable after a timing-sensitive repeat. But reconsidering the performance claim didn’t necessarily lead it to reconsider the research direction.</p>
+    </section>
+
+    <section id="uncertainty">
+      <h2>Explore the uncertainty, not just the implementation.</h2>
+      <p>The pattern reminded me of a useful engineering habit: choose an architecture, diagnose its weaknesses, and keep refining it until it works.</p>
+      <p>But in this research, whether that architecture was worth pursuing was itself an open question. Improving the implementation could leave that question almost untouched.</p>
+      <p>That changed how I thought about the idea-pool guideline. A list of possibilities wasn’t the goal. I wanted the agent to choose investigations whose outcomes could change its judgment.</p>
+      <p>If a prototype performs poorly, is the mechanism weak, the implementation inadequate, or the test unsuitable? If it improves slightly, does that support the proposed idea—or did it simply get more search effort? What would make us deepen this direction, and what would make us investigate something else?</p>
+      <p>We discussed replacing the emphasis on maintaining a pool with a more direct principle:</p>
+      <blockquote><p>Choose investigations that resolve consequential uncertainties and can change which approach you pursue. Treat the current architecture as a hypothesis, not a commitment; an idea pool matters only when evidence changes what you investigate.</p></blockquote>
+      <p>This also changes what should happen after a result. A finished experiment gives the agent evidence for its next decision. It needn’t be the point where the whole investigation ends.</p>
+      <p>The frustrating part is that we can explain this clearly in conversation. Getting the working agent to act on it consistently is still unresolved.</p>
     </section>
 
     <section id="enough">
       <h2>So, is a system prompt all you need?</h2>
-      <p>I don’t know yet. This didn’t end with a breakthrough algorithm or a completely autonomous researcher.</p>
-      <p>What changed was how I approached the instructions. Instead of adding another stage whenever the agent disappointed me, I tried to identify the research judgment I wanted it to make: distinguish significance from correctness, keep alternatives alive, and use findings to decide what comes next.</p>
-      <p>Those expectations could live in the system prompt. The specific problem and what we learned could live in the notebook. The agent could choose the investigative path.</p>
-      <p>This isn’t proof that system prompts outperform skills. A skill can express the same principles, and a system prompt can be just as procedural. For me, changing the setup was a way to reconsider what I was asking the agent to own.</p>
-      <p>I still want constraints on evidence, resources, and safety. I don’t want to prescribe every ordinary research decision just because I can.</p>
-      <p class="closing">I want to give the agent a problem I don’t know how to solve—and have it help me figure out where to go, rather than ask me for the route.</p>
+      <p>For removing the mechanical workflow in my setup, it was enough. I no longer needed an elaborate skill to prescribe the research sequence. That was a useful change.</p>
+      <p>For avoiding premature commitment and stopping, we are still working on it.</p>
+      <p>One possibility we discussed is separating research decisions from routine implementation. Let the main agent keep the objective, competing explanations, and unresolved questions in view. Let subagents handle bounded coding and experiment tasks, then return the evidence—including failures.</p>
+      <p>My suggestion was to keep the main context from filling up with the details of making one implementation work. A worker finishing its assignment would give the main agent something to evaluate, rather than become the end of the research session.</p>
+      <p>That is a proposed experiment, not a demonstrated fix. A main agent that delegates only DP variants would still have the same problem. And keeping the process running is separate from making its research decisions better.</p>
+      <p class="closing">The minimal prompt got us past “follow the procedure.” The question now is how to get past “make this idea work” and toward “find out which idea is worth pursuing.”</p>
     </section>
 
     <section class="materials" id="materials">
       <h2>The prompt and the background</h2>
       <ul class="material-links">
-        <li><a href="artifacts/research-system-prompt.txt">The research system prompt we arrived at</a></li>
+        <li><a href="artifacts/research-system-prompt.txt">The installed prompt, before the follow-up proposals</a></li>
         <li><a href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/">The pi design post that helped start this</a></li>
         <li><a href="https://github.com/Br0kenSmi1e/system-prompt">This blog’s source and revision history</a></li>
       </ul>
